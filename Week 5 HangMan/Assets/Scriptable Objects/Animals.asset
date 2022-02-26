@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f3d9475935d614db87cf06b4262133, type: 3}
+  m_Name: Animals
+  m_EditorClassIdentifier: 
+  words:
+  - CHIPMUNK
+  - HAMSTER
+  - BADGER
+  - OWL
+  - CHICKEN
+  - EAGLE
+  - COW
+  - KINGFISHER
+  - SWIFTLET
+  - GOAT
+  - ADDAX
+  - TOAD
+  - GOOSE
+  - MOLES
+  - MONKEY
+  - ANEATER
+  - CROW
+  - COBRA
+  - HORSE
+  - BEETLE
+  - FROG
+  - EMU
+  - PARROT
+  - FLAMINGO
+  - CLOWNFISH
+  - BAT
+  - CAPYBARA
+  - ARMADILLO
+  - ELK
+  - CORNCRAKE
+  - DHOLE
+  - GORILLA
+  - ALLIGTOR
+  - SNAKE
+  - SOLENODON
+  - ORCA
+  - CHINCHILLA
+  - DUCK
+  - DRAGONFLY
+  - SPIDER
+  - CHIMPANZEE
+  - CACTUS MOUSE
+  - TIGER
+  - CODFISH
+  - BUTTERFLY
+  - ANTELOPE
+  - SCORPION
+  - CAMEL
+  - BANANA SPIDER
+  - GERENUK
+  - RHINOCEROS
+  - LIZARD
+  - PUFFIN
+  - CRAB
+  - CHEETAH
+  - CHINOOK
+  - PENGUIN
+  - RABBIT
+  - BISON
+  - SQUID
+  - PLATYPUS
+  - KINKAJOU
+  - VOLE
+  - IBISBILL
+  - ELEPHAND
+  - JAGUAR
+  - GEESE
+  - COCKROACH
+  - BEAR
+  - RHINOCEROS
+  - BLUE WHALE
+  - MICE
+  - PIG
+  - DONKEY
+  - WOLF
+  - CAPERCAILLIE
+  - GEMSBOK
+  - OCTOPUS
+  - LION
+  - SQUIRREL
+  - SEA TURTLE
+  - SEAL
+  - FOX
+  - PELICAN
+  - COYOTE
+  - HAWK
+  - CARACAL
+  - IGUANA
+  - BEETLE
+  - TORTOISE
+  - GIRAFFE
+  - SHARK
+  - CARIBOU
+  - LEOPARD
+  - DEER
+  - OTTER
+  - BUZZARD
+  - DOG
+  - DOLPHIN
+  - GUINEA PIG
