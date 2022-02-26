@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
         drawMan = drawManObj.GetComponent<DrawMan>();
         playerInfo.ThemeChosen = false;
         gameStarted = false;
+        menuObj.SetActive(true);
 
         warningPopAnim = chooseThemeWarning.GetComponent<Animator>();
     }

@@ -6,9 +6,13 @@ public class DisplayCurrentTheme : MonoBehaviour
     [SerializeField] private Text buttonText;
     [SerializeField] private PlayerInfo playerInfo;
 
-    private void Start()
+    private void OnEnable()
     {
-        buttonText.text = "THEME: SELECT";
+        if (!playerInfo.ThemeChosen)
+        {
+            buttonText.text = "THEME: SELECT";
+        }
+        else DisplayChosenTheme();
     }
     public void DisplayChosenTheme()
     {
