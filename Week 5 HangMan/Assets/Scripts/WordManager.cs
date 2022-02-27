@@ -34,6 +34,13 @@ public class WordManager : MonoBehaviour
     {
         lastChosenThemeNum = themeNum;
         wordsArray = themeWords[themeNum].ShuffleMyArray();
+        if (gameManager.gameStarted)
+        {
+            SetNextWord();
+            SelectNewWord();
+            gameManager.StartGame();
+            print("game was playing");
+        }
     }
     public void StringToChar()//done
     {
@@ -54,7 +61,7 @@ public class WordManager : MonoBehaviour
         }
     }
     
-    public void GetButtonLetter(Button button)
+    public void GetButtonLetter(Button button) //done
     {
         string buttonLetter = button.GetComponentInChildren<Text>().text;
         ButtonScrt thisButton = button.GetComponent<ButtonScrt>();
@@ -159,6 +166,7 @@ public class WordManager : MonoBehaviour
 
     public void ExitingCurrentGame()
     {
+        ClearChildren();
         correctLetterValue = 0;
         hintsThisRound = 0;
     }
@@ -171,6 +179,7 @@ public class WordManager : MonoBehaviour
     }
     public void SelectNewWord()
     {
+        print("new word selecting");
         hintsThisRound = 0;
         correctLetterValue = 0;
         neededCorrectCount = 0;

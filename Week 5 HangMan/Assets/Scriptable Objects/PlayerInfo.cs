@@ -28,6 +28,8 @@ public class PlayerInfo : ScriptableObject
 
         WrongValue = 0;
         GameStarted = false;
+        Word = "";
+        ThemeName = "SELECT";
     }
     public void GiveOneMoreChance()
     {

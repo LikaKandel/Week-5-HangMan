@@ -53,5 +53,9 @@ public class ButtonScrt : MonoBehaviour
     {
         GetComponent<Button>().interactable = false;
     }
+    public void ActivateButtons()
+    {
+        GetComponent<Button>().interactable = true;
+    }
 
 }

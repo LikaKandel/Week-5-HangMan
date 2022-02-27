@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject hintButtonObj;
     [SerializeField] private GameObject menuButtonObj;
     [SerializeField] private GameObject chooseThemeWarning;
+    [SerializeField] private GameObject mainMenuObj;
     [SerializeField] private GameObject menuObj;
 
     [SerializeField] private Button startButton; 
@@ -34,10 +36,11 @@ public class GameManager : MonoBehaviour
     public  bool gameStarted { get; private set; }
     private void Start()
     {
+        playerInfo.ResetGame();
         drawMan = drawManObj.GetComponent<DrawMan>();
         playerInfo.ThemeChosen = false;
         gameStarted = false;
-        menuObj.SetActive(true);
+        mainMenuObj.SetActive(true);
 
         warningPopAnim = chooseThemeWarning.GetComponent<Animator>();
     }
@@ -46,7 +49,6 @@ public class GameManager : MonoBehaviour
     {
         if (playerInfo.ThemeChosen)
         {
-            playerInfo.ResetGame();
             drawManObj.SetActive(true);
             chooseThemePanel.SetActive(false);
             questionField.SetActive(true);
@@ -54,7 +56,7 @@ public class GameManager : MonoBehaviour
             hintButtonObj.SetActive(true);
             menuButtonObj.SetActive(true);
             playerInfo.NoMistakesThisRound = true;
-            menuObj.SetActive(false);
+            mainMenuObj.SetActive(false);
             gameStarted = true;
 
             wordManager.SelectNewWord();
@@ -87,15 +89,34 @@ public class GameManager : MonoBehaviour
     }
     public void Menu()
     {
-        playerInfo.ResetGame();
-        youLosePanel.SetActive(false);
-        playAgainField.SetActive(false);
-        chooseThemePanel.SetActive(true);
-        hintButtonObj.SetActive(false);
-        menuButtonObj.SetActive(false);
+        DeactivateButtons();
+        menuObj.SetActive(true);
+    }
+    public void ContinueGame()
+    {
+        ActivateButtons();
         menuObj.SetActive(false);
     }
-    public void CheckWrongValue() // put on "NEXT" button
+
+    
+
+    public void MainMenu()
+    {
+        menuObj.SetActive(false);
+        DeactivateAllGamePanels();
+        mainMenuObj.SetActive(true);
+    }
+    public void QuitGame()
+    {
+        DeactivateAllGamePanels();
+        gameStarted = false;
+        playerInfo.ResetGame();
+        menuObj.SetActive(false);
+        mainMenuObj.SetActive(true);
+        playerInfo.ResetGame();
+
+    }
+    public void CheckWrongValue()
     {
         if (playerInfo.NoMistakesThisRound && playerInfo.StickManLives > 0)
         {
@@ -127,14 +148,23 @@ public class GameManager : MonoBehaviour
 
     public void OpenThemePanel()
     {
+        DeactivateButtons();
         menuObj.SetActive(false);
+        DeactivateAllGamePanels();
+        mainMenuObj.SetActive(false);
         chooseThemePanel.SetActive(true);
     }
     public void CloseThemePanel()
     {
-        if (!gameStarted && !chooseThemePanel.GetComponent<ChooseTheme>().ThemeCurrentlyPlaying)
+        if (!gameStarted)
         {
-            menuObj.SetActive(true);
+            mainMenuObj.SetActive(true);
+            chooseThemePanel.SetActive(false);
+            playerInfo.StickManLives = 0;
+            drawMan.UpdateStickmanState();
+        }
+        else if (!chooseThemePanel.GetComponent<ChooseTheme>().ThemeCurrentlyPlaying)
+        {
             chooseThemePanel.SetActive(false);
             playerInfo.StickManLives = 0;
             drawMan.UpdateStickmanState();
@@ -165,7 +195,13 @@ public class GameManager : MonoBehaviour
             keyboardParent.transform.GetChild(i).GetComponent<ButtonScrt>().DeactivateButton();
         }
     }
-
+    private void ActivateButtons()
+    {
+        for (int i = 0; i < keyboardParent.transform.childCount; i++)
+        {
+            keyboardParent.transform.GetChild(i).GetComponent<ButtonScrt>().ActivateButtons();
+        }
+    }
     private IEnumerator ChooseThemeWarning()
     {
         startButton.interactable = false;
@@ -176,8 +212,15 @@ public class GameManager : MonoBehaviour
         startButton.interactable = true;
         warningPopAnim.enabled = false ;
     }
-    private void StopGame()
+    private void DeactivateAllGamePanels()
     {
-
+        chooseThemePanel.SetActive(false);
+        youLosePanel.SetActive(false);
+        keyboardParent.SetActive(false);
+        anotherChanceButton.SetActive(false);
+        gameEnded.SetActive(false);
+        drawManObj.SetActive(false);
+        hintButtonObj.SetActive(false);
+        menuButtonObj.SetActive(false);
     }
 }

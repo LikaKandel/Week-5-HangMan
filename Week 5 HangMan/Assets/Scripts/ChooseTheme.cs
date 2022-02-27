@@ -16,6 +16,7 @@ public class ChooseTheme : MonoBehaviour
     private void OnEnable()
     {
         GetThemeSize();
+        print("enabled");
     }
     private int animalWordsMax;
     private int locationWordsMax;

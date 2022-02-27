@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76b435e3f89aa84b98385895def498e, type: 3}
   m_Name: PlayerInfo
   m_EditorClassIdentifier: 
-  StickManLives: 2
-  WrongValue: 3
+  StickManLives: 0
+  WrongValue: 0
   PlayerLives: 3
   NoMistakesThisRound: 1
   CorrectLetterAmount: 0
   WrongLetterAmount: 0
   GameStarted: 0
   ThemeChosen: 1
-  Word: PUFFIN
+  Word: FLAMINGO
   ThemeName: ANIMALS
+  AnimalsGuessedNum: 2
+  LocationsGuessedNum: 1
+  RandomGuessedNum: 0
