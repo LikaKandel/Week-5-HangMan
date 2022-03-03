@@ -1,14 +1,14 @@
-
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Words Theme", fileName = "New Words Theme")]
 public class Words : ScriptableObject
 {
-    public string[] words;
+    public List<string> words;
 
-    public string[] ShuffleMyArray()
+    public List<string> ShuffleMyArray()
     {
-        ShuffleArray.Shuffle(words);
+        words.ListShuffle();
         return words;
     }
 }

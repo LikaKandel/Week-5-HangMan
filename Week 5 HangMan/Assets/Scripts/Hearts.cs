@@ -41,7 +41,6 @@ public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (mouse_over)
         {
             doAnimate = true;
-            print("mouse over");
             if (playerInfo.PlayerLives < 3) DisplayTimeLeft(timeReganarationNum);
             else
             {
@@ -67,7 +66,6 @@ public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     public void ShowReganaratedHeart()
     {
-        print(playerInfo.PlayerLives);
         transform.GetChild(playerInfo.PlayerLives).gameObject.SetActive(true);
     }
 
@@ -82,7 +80,6 @@ public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     private IEnumerator FadeOut()
     {
-        //print("coroutine is called");
         animator.enabled = true;
         yield return new WaitForSeconds(0.4f);
         doAnimate = false;

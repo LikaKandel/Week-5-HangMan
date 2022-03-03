@@ -28,7 +28,7 @@ public class UIButtons : MonoBehaviour
         wordManager.ExitingCurrentGame();
         keyboard.ClearAll();
         gameManager.ChooseAnotherTheme();
-        gameManager.Menu();
+        gameManager.ToggleUI("Menu");
         hintScript.ResetHints();
         
     }

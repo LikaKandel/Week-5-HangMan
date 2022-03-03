@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class WordManager : MonoBehaviour
 
 {
+    [SerializeField] private Transform lettersParentTransform;
+    [SerializeField] private List<Words> themeWords;
+    [SerializeField] private GameObject emptyObj;
+
+    [SerializeField] private PlayerInfo playerInfo;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private SetLetter letterObj;
-    [SerializeField] private Transform lettersParentTransform;
-    //[SerializeField] private Transform buttonParentTransform;
-    //[SerializeField] private KeyBoard key;
-    [SerializeField] private Words[] themeWords;
-    [SerializeField] private GameObject emptyObj;
-    [SerializeField] private PlayerInfo playerInfo;
+    [SerializeField] private SoundManager soundManager;
 
     private char[] wordLettersChars;
     private int correctLetterValue;
@@ -19,15 +20,17 @@ public class WordManager : MonoBehaviour
     public static string currentWord { get; private set; }
     public int wordCount { get; set; }
 
-    private string[] wordsArray;
+    private List<string> wordsArray;
+    private List<string> unusedWords;   
     
     private int lastChosenThemeNum;
     public int hintsThisRound { get; private set; }
 
-    private void Awake()
+    private void Start()
     {
         hintsThisRound = 0;
         wordCount = 0;
+
         
     }
     public void ChooseTheme(int themeNum)
@@ -39,14 +42,13 @@ public class WordManager : MonoBehaviour
             SetNextWord();
             SelectNewWord();
             gameManager.StartGame();
-            print("game was playing");
         }
     }
-    public void StringToChar()//done
+    public void StringToChar()
     {
         wordLettersChars = currentWord.ToCharArray();
     }
-    private void SpawnLetters() //done
+    private void SpawnLetters() 
     {
         for (int i = 0; i < wordLettersChars.Length; i++)
         {
@@ -61,8 +63,10 @@ public class WordManager : MonoBehaviour
         }
     }
     
-    public void GetButtonLetter(Button button) //done
+    public void GetButtonLetter(Button button) 
     {
+        
+        soundManager.PlaySound(Random.Range(0,2));
         string buttonLetter = button.GetComponentInChildren<Text>().text;
         ButtonScrt thisButton = button.GetComponent<ButtonScrt>();
         if (currentWord.Contains(buttonLetter))
@@ -82,14 +86,16 @@ public class WordManager : MonoBehaviour
             thisButton.DrawRedLine();
         }
         int timesplayedVaule = wordCount + 1;
-        if (correctLetterValue >= neededCorrectCount && timesplayedVaule >= wordsArray.Length)
+        if (correctLetterValue >= neededCorrectCount && timesplayedVaule >= wordsArray.Count)
         {
             gameManager.ThemeFinished();
             ChoosingAnotherTheme();
         }
-        if (correctLetterValue >= neededCorrectCount && wordCount < wordsArray.Length)
+        if (correctLetterValue >= neededCorrectCount && wordCount < wordsArray.Count)
         {
             gameManager.PlayAgainPanel();
+            unusedWords.Add(wordsArray[0]);
+            wordsArray.RemoveAt(0);
         }
        
     }
@@ -121,7 +127,7 @@ public class WordManager : MonoBehaviour
         hintsThisRound++;
         
     }
-    private void SetCorrectLetter(int letterValue)//works -- send letter to underline
+    private void SetCorrectLetter(int letterValue)
     {
         correctLetterValue++;
         SetLetter tempLetter = lettersParentTransform.GetChild(letterValue).GetComponent<SetLetter>();
@@ -131,7 +137,7 @@ public class WordManager : MonoBehaviour
     {
         gameManager.WrongLetterChacked();
     }
-    public void PrepareNewWord()//done
+    public void PrepareNewWord()
     {
         currentWord = wordsArray[wordCount];
         playerInfo.Word = currentWord;
@@ -156,7 +162,7 @@ public class WordManager : MonoBehaviour
     {
         wordCount++;
         neededCorrectCount = 0;
-        if (wordCount < wordsArray.Length)
+        if (wordCount < wordsArray.Count)
         {
             currentWord = wordsArray[wordCount];
             gameManager.playAgainField.SetActive(false);
@@ -179,7 +185,6 @@ public class WordManager : MonoBehaviour
     }
     public void SelectNewWord()
     {
-        print("new word selecting");
         hintsThisRound = 0;
         correctLetterValue = 0;
         neededCorrectCount = 0;

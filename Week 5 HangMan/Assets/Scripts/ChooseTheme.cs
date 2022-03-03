@@ -16,7 +16,6 @@ public class ChooseTheme : MonoBehaviour
     private void OnEnable()
     {
         GetThemeSize();
-        print("enabled");
     }
     private int animalWordsMax;
     private int locationWordsMax;
@@ -50,15 +49,14 @@ public class ChooseTheme : MonoBehaviour
             wordManager.ChooseTheme(2);
             playerInfo.ChooseThemeName("RANDOM");
             ThemeCurrentlyPlaying = false;
-
         }
         else ThemeCurrentlyPlaying = true;
     }
     private void GetThemeSize()
     {
-        animalWordsMax = themeArray[0].words.Length;
-        locationWordsMax = themeArray[1].words.Length;
-        //randomWordsMax = themeArray[2].words.Length;
+        animalWordsMax = themeArray[0].words.Count;
+        locationWordsMax = themeArray[1].words.Count;
+        randomWordsMax = themeArray[2].words.Count;
         animalGuessedNum.text = playerInfo.AnimalsGuessedNum + " / " + animalWordsMax;
         locationGuessedNum.text = playerInfo.LocationsGuessedNum + " / " + locationWordsMax;
         randomGuessedNum.text = playerInfo.RandomGuessedNum + " / " + randomWordsMax;
