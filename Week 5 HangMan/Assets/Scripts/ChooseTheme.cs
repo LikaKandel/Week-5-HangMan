@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class ChooseTheme : MonoBehaviour
@@ -13,17 +14,19 @@ public class ChooseTheme : MonoBehaviour
 
     [SerializeField] private Words[] themeArray;
 
-    private void OnEnable()
+    public bool themeIsActive { get; private set; }
+    private bool animalsDeactivated;
+    private bool locationsDeactivated;
+    private bool randomsDeactivated;
+    private void Start()
     {
-        GetThemeSize();
+        UpdateThemeNums();
     }
-    private int animalWordsMax;
-    private int locationWordsMax;
-    private int randomWordsMax;
 
     public bool ThemeCurrentlyPlaying { get; private set; }
     public void ChooseAnimals()
     {
+        if (animalsDeactivated) GetComponent<Button>().enabled = false;
         if (playerInfo.ThemeName != "ANIMALS")
         {
             wordManager.ChooseTheme(0);
@@ -34,6 +37,7 @@ public class ChooseTheme : MonoBehaviour
     }
     public void ChooseLocations()
     {
+        if (locationsDeactivated) GetComponent<Button>().enabled = false;
         if (playerInfo.ThemeName != "LOCATIONS")
         {
             wordManager.ChooseTheme(1);
@@ -44,6 +48,7 @@ public class ChooseTheme : MonoBehaviour
     }
     public void ChooseRandom()
     {
+        if (randomsDeactivated) GetComponent<Button>().enabled = false;
         if (playerInfo.ThemeName != "RANDOM")
         {
             wordManager.ChooseTheme(2);
@@ -52,13 +57,37 @@ public class ChooseTheme : MonoBehaviour
         }
         else ThemeCurrentlyPlaying = true;
     }
-    private void GetThemeSize()
+    public void UpdateThemeNums()
     {
-        animalWordsMax = themeArray[0].words.Count;
-        locationWordsMax = themeArray[1].words.Count;
-        randomWordsMax = themeArray[2].words.Count;
-        animalGuessedNum.text = playerInfo.AnimalsGuessedNum + " / " + animalWordsMax;
-        locationGuessedNum.text = playerInfo.LocationsGuessedNum + " / " + locationWordsMax;
-        randomGuessedNum.text = playerInfo.RandomGuessedNum + " / " + randomWordsMax;
+        int animalMax = themeArray[0].words.Count;
+        int locationMax = themeArray[1].words.Count;
+        int randomMax = themeArray[2].words.Count;
+
+        GetThemeSize(animalSize: animalMax, locationSize: locationMax, randomSize: randomMax);
+    }
+    private void GetThemeSize( int? animalSize, int? locationSize,int? randomSize )
+    {
+        animalGuessedNum.text = playerInfo.AnimalsGuessedNum + " / " + animalSize;
+        locationGuessedNum.text = playerInfo.LocationsGuessedNum + " / " + locationSize;
+        randomGuessedNum.text = playerInfo.RandomGuessedNum + " / " + randomSize;
+    }
+
+    public void DeactivateTheme(string Name)
+    {
+        switch (Name)
+        {
+            case "ANIMALS":
+                animalsDeactivated = true;
+                break;
+            case "LOCATIONS":
+                locationsDeactivated = true;
+                break;
+            case "RANDOM":
+                randomsDeactivated = true;
+                break;
+
+            default:
+                break;
+        }
     }
 }

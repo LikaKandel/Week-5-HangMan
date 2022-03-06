@@ -24,6 +24,7 @@ public class HintFunction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private string _word;
     private int currentHintAmount;
     private int lastLoopNum = 0;
+    private int hintsUsedThisRound;
 
     private char[] wordLetters;
     private float regenerationInSeconds;
@@ -36,6 +37,7 @@ public class HintFunction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         timerDisplay.SetActive(false);
         DisplayHintsLeft();
         doAnimate = true;
+        hintsUsedThisRound = 0;
         regenerationInSeconds = regenerationTimeInMinutes * 60;
     }
     private void Update()
@@ -93,7 +95,7 @@ public class HintFunction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void GetHint()
     {
         TakeCurrentWord();
-        SetFirstCorrectLetter();
+        SetFirstAvailableLetter();
         DisplayHintsLeft();
     }
     private void TakeCurrentWord()
@@ -102,20 +104,23 @@ public class HintFunction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         wordLetters = _word.ToCharArray();
     }
     
-    private void SetFirstCorrectLetter()
+    private void SetFirstAvailableLetter()
     {
+        int wordArrayNum = 0;
         for (int i = lastLoopNum; i < keyboardParnt.childCount; i++)
         {
             lastLoopNum++;
             ButtonScrt key = keyboardParnt.GetChild(i).gameObject.GetComponent<ButtonScrt>();
-            if (key.thisLetter == wordLetters[0].ToString() && wordManager.hintsThisRound < 1)
+            if (key.thisLetter == wordLetters[wordArrayNum].ToString() && wordManager.hintAllowed && !key.isUsed)
             {
                 key.DrawYellowLine();
                 wordManager.GetHintLetter(key.thisLetter, currentHintAmount);
                 currentHintAmount--;
                 break;
             }
+            else if (key.isUsed) wordArrayNum++;
         }
+        lastLoopNum = 0;
     }
     public void ResetHints()
     {

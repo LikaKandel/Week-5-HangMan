@@ -25,11 +25,15 @@ public class PlayerInfo : ScriptableObject
         StickManLives = 0; 
         
         NoMistakesThisRound = true;
-
+        PlayerLives = 3;
         WrongValue = 0;
         GameStarted = false;
         Word = "";
         ThemeName = "SELECT";
+
+        AnimalsGuessedNum = 0;
+        LocationsGuessedNum = 0;
+        RandomGuessedNum = 0;
     }
     public void GiveOneMoreChance()
     {

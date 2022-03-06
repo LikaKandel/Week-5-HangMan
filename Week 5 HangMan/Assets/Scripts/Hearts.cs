@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Sprite[] heartImages;
+    [SerializeField] private GameObject[] heartObjs;
     [SerializeField] private PlayerInfo playerInfo;
     [SerializeField] private float startReganarationTimeMinutes;
     [SerializeField] private Text countdownText;
@@ -42,7 +43,7 @@ public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             doAnimate = true;
             if (playerInfo.PlayerLives < 3) DisplayTimeLeft(timeReganarationNum);
-            else
+            else 
             {
                 countdownPanel.SetActive(true);
                 countdownText.text = "FULL";
@@ -62,7 +63,7 @@ public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void DecreaseHeart()
     {
-        transform.GetChild(playerInfo.PlayerLives).gameObject.SetActive(false);
+        heartObjs[playerInfo.PlayerLives].SetActive(false);
     }
     public void ShowReganaratedHeart()
     {

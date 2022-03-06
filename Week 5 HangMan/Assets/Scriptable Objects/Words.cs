@@ -6,7 +6,7 @@ public class Words : ScriptableObject
 {
     public List<string> words;
 
-    public List<string> ShuffleMyArray()
+    public List<string> ShuffleMyList()
     {
         words.ListShuffle();
         return words;

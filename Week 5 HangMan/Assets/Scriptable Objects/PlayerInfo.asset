@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76b435e3f89aa84b98385895def498e, type: 3}
   m_Name: PlayerInfo
   m_EditorClassIdentifier: 
-  StickManLives: 4
-  WrongValue: 5
-  PlayerLives: 2
+  StickManLives: 0
+  WrongValue: 1
+  PlayerLives: 3
   NoMistakesThisRound: 1
   CorrectLetterAmount: 0
   WrongLetterAmount: 0
   GameStarted: 0
   ThemeChosen: 1
-  Word: SYRIA
-  ThemeName: LOCATIONS
-  AnimalsGuessedNum: 0
-  LocationsGuessedNum: 2
-  RandomGuessedNum: 2
+  Word: GEMSBOK
+  ThemeName: ANIMALS
+  AnimalsGuessedNum: 3
+  LocationsGuessedNum: 0
+  RandomGuessedNum: 0

@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class WordManager : MonoBehaviour
 
@@ -14,41 +14,45 @@ public class WordManager : MonoBehaviour
     [SerializeField] private SetLetter letterObj;
     [SerializeField] private SoundManager soundManager;
 
-    private char[] wordLettersChars;
-    private int correctLetterValue;
-    private int neededCorrectCount;
-    public static string currentWord { get; private set; }
-    public int wordCount { get; set; }
+    [SerializeField] private ChooseTheme chooseThemeScrpt;
+    [SerializeField] private WordInfo wordInfo;
 
-    private List<string> wordsArray;
-    private List<string> unusedWords;   
-    
-    private int lastChosenThemeNum;
-    public int hintsThisRound { get; private set; }
+    public int WordCount { get; set; }
+    public bool hintAllowed { get; private set; } //relace from "hints this round
+    public static string currentWord;
+    private char[] wordLettersChars;
+    private int _correctLetterValue;
+    private int _neededCorrectCount;
+    private int _lastThemeListNum;
+
+    private List<string> _wordsList;
+    private List<string> _unusedWords;
+
 
     private void Start()
     {
-        hintsThisRound = 0;
-        wordCount = 0;
-
-        
+        hintAllowed = true;
+        WordCount = 0;
     }
     public void ChooseTheme(int themeNum)
     {
-        lastChosenThemeNum = themeNum;
-        wordsArray = themeWords[themeNum].ShuffleMyArray();
-        if (gameManager.gameStarted)
+            _lastThemeListNum = themeNum;
+        if (!gameManager.gameStarted)
+        {
+            _wordsList = themeWords[themeNum].ShuffleMyList();
+        }
+        else
         {
             SetNextWord();
             SelectNewWord();
-            gameManager.StartGame();
+            gameManager.StartPlaying();
         }
     }
     public void StringToChar()
     {
         wordLettersChars = currentWord.ToCharArray();
     }
-    private void SpawnLetters() 
+    private void SpawnLetters()
     {
         for (int i = 0; i < wordLettersChars.Length; i++)
         {
@@ -62,11 +66,11 @@ public class WordManager : MonoBehaviour
             }
         }
     }
-    
-    public void GetButtonLetter(Button button) 
+
+    public void GetButtonLetter(Button button)
     {
-        
-        soundManager.PlaySound(Random.Range(0,2));
+
+        soundManager.PlaySound(Random.Range(0, 2));
         string buttonLetter = button.GetComponentInChildren<Text>().text;
         ButtonScrt thisButton = button.GetComponent<ButtonScrt>();
         if (currentWord.Contains(buttonLetter))
@@ -85,51 +89,46 @@ public class WordManager : MonoBehaviour
             WrongLetter();
             thisButton.DrawRedLine();
         }
-        int timesplayedVaule = wordCount + 1;
-        if (correctLetterValue >= neededCorrectCount && timesplayedVaule >= wordsArray.Count)
+        int timesplayedVaule = WordCount + 1;
+        if (_correctLetterValue >= _neededCorrectCount && timesplayedVaule >= _wordsList.Count)
         {
             gameManager.ThemeFinished();
+            chooseThemeScrpt.DeactivateTheme(playerInfo.ThemeName);
             ChoosingAnotherTheme();
         }
-        if (correctLetterValue >= neededCorrectCount && wordCount < wordsArray.Count)
+        if (_correctLetterValue >= _neededCorrectCount && WordCount < _wordsList.Count)
         {
             gameManager.PlayAgainPanel();
-            unusedWords.Add(wordsArray[0]);
-            wordsArray.RemoveAt(0);
         }
-       
+
     }
     private void CalculateCorrectLetterValue()
     {
         for (int i = 0; i < wordLettersChars.Length; i++)
         {
-            int currentCorrectValue = neededCorrectCount;
+            int currentCorrectValue = _neededCorrectCount;
             if (wordLettersChars[i].ToString() == " ")
             {
-                neededCorrectCount = currentCorrectValue;
+                _neededCorrectCount = currentCorrectValue;
             }
-            else neededCorrectCount++;
+            else _neededCorrectCount++;
         }
     }
     public void GetHintLetter(string letter, int hintNumAllowed)
     {
+        if (hintNumAllowed < 1 || !hintAllowed) return;
         for (int i = 0; i < wordLettersChars.Length; i++)
         {
-            if (hintNumAllowed < 1 ||  hintsThisRound >= 1) 
-            {
-                break;
-            } 
             if (wordLettersChars[i].ToString() == letter)
             {
                 SetCorrectLetter(i);
             }
         }
-        hintsThisRound++;
-        
+        hintAllowed = false;
     }
     private void SetCorrectLetter(int letterValue)
     {
-        correctLetterValue++;
+        _correctLetterValue++;
         SetLetter tempLetter = lettersParentTransform.GetChild(letterValue).GetComponent<SetLetter>();
         tempLetter.InsertLetter(wordLettersChars[letterValue].ToString());
     }
@@ -139,7 +138,7 @@ public class WordManager : MonoBehaviour
     }
     public void PrepareNewWord()
     {
-        currentWord = wordsArray[wordCount];
+        currentWord = _wordsList[WordCount];
         playerInfo.Word = currentWord;
     }
 
@@ -152,19 +151,24 @@ public class WordManager : MonoBehaviour
     }
     public void ChoosingAnotherTheme()
     {
-        correctLetterValue = 0;
-        neededCorrectCount = 0;
-        wordCount = 0;
-        hintsThisRound = 0;
-        ClearChildren();
+        if (!chooseThemeScrpt.ThemeCurrentlyPlaying) return;
+        _correctLetterValue = 0;
+        _neededCorrectCount = 0;
+        WordCount = 0;
+        hintAllowed = false;
+        if (!gameManager.gameStarted)
+        {
+            ClearChildren();
+            hintAllowed = true;
+        }
     }
     public void ShowNextWord()
     {
-        wordCount++;
-        neededCorrectCount = 0;
-        if (wordCount < wordsArray.Count)
+        WordCount++;
+        _neededCorrectCount = 0;
+        if (WordCount < _wordsList.Count)
         {
-            currentWord = wordsArray[wordCount];
+            currentWord = _wordsList[WordCount];
             gameManager.playAgainField.SetActive(false);
         }
         SelectNewWord();
@@ -173,21 +177,25 @@ public class WordManager : MonoBehaviour
     public void ExitingCurrentGame()
     {
         ClearChildren();
-        correctLetterValue = 0;
-        hintsThisRound = 0;
+        _correctLetterValue = 0;
+        hintAllowed = true;
     }
 
     public void SetNextWord()
     {
+        SaveWordInfo();
         ClearChildren();
         ShowNextWord();
+        if (gameManager.gameStarted) hintAllowed = false;
+        else hintAllowed = true;
         playerInfo.NoMistakesThisRound = true;
     }
     public void SelectNewWord()
     {
-        hintsThisRound = 0;
-        correctLetterValue = 0;
-        neededCorrectCount = 0;
+        if (gameManager.gameStarted) hintAllowed = false;
+        else hintAllowed = true;
+        _correctLetterValue = 0;
+        _neededCorrectCount = 0;
         PrepareNewWord();
         StringToChar();
         CalculateCorrectLetterValue();
@@ -198,10 +206,29 @@ public class WordManager : MonoBehaviour
     public void RetryWhenLost()
     {
         ChoosingAnotherTheme();
-        ChooseTheme(lastChosenThemeNum);
+        ChooseTheme(_lastThemeListNum);
         PrepareNewWord();
         StringToChar();
         CalculateCorrectLetterValue();
         SpawnLetters();
+    }
+
+    private void SaveWordInfo()
+    {
+        switch (playerInfo.ThemeName)
+        {
+            case "ANIMALS":
+                wordInfo.AddAnimalInfo(currentWord, _correctLetterValue, wordLettersChars.Length - _correctLetterValue);
+                break;
+            case "LOCATIONS":
+                wordInfo.AddLocationInfo(currentWord, _correctLetterValue, wordLettersChars.Length - _correctLetterValue);
+                break;
+            case "RANDOM":
+                wordInfo.AddRandomInfo(currentWord, _correctLetterValue, wordLettersChars.Length - _correctLetterValue);
+                break;
+
+            default:
+                break;
+        }
     }
 }

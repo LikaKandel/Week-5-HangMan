@@ -17,7 +17,7 @@ public class UIButtons : MonoBehaviour
 
     public void Retry()
     {
-        wordManager.wordCount++;
+        wordManager.WordCount++;
         gameManager.OneMoreChance();
         wordManager.RetryWhenLost();
     }

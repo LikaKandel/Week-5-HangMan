@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject questionField;
     [SerializeField] private GameObject keyboardParent;
     [SerializeField] private GameObject drawManObj;
+    [SerializeField] private GameObject heartPanel;
+    [SerializeField] private GameObject gameObjectsPanel;
     [SerializeField] private Animator warningPopAnim;
 
     [Header("Buttons")]
@@ -39,23 +41,17 @@ public class GameManager : MonoBehaviour
 
     public  bool gameStarted { get; private set; }
 
-    private void Start()
-    {
-        playerInfo.ResetGame();
-        mainMenuObj.SetActive(true);
-        playerInfo.ThemeChosen = false;
-        gameStarted = false;
-    }
 
-    public void StartGame()
+    public void StartPlaying()
     {
         if (!playerInfo.ThemeChosen)
         {
             StartCoroutine(ChooseThemeWarningCoroutine());
             return;
         }
+        gameObjectsPanel.SetActive(true);
         drawManObj.SetActive(true);
-        chooseThemePanel.SetActive(false);
+        //chooseThemePanel.SetActive(false);
         questionField.SetActive(true);
         keyboardParent.SetActive(true);
         hintButtonObj.SetActive(true);
@@ -66,6 +62,15 @@ public class GameManager : MonoBehaviour
 
         wordManager.SelectNewWord();
         keyboard.ChooseLettersNeeded(playerInfo.GetCurrentWord());
+    }
+
+    public void StartMenu()
+    {
+        playerInfo.ResetGame();
+        playerInfo.ThemeChosen = false;
+        mainMenuObj.SetActive(true);
+        heartPanel.SetActive(true);
+        gameStarted = false;
     }
     public void YouLost()
     {
@@ -165,14 +170,14 @@ public class GameManager : MonoBehaviour
     {
         gameEnded.SetActive(false);
         chooseThemePanel.SetActive(true);
-        DeactivateKeyboardButtons();
+        menuObj.SetActive(false);
     }
 
     public void OpenThemePanel()
     {
         DeactivateKeyboardButtons();
         menuObj.SetActive(false);
-        DeactivateAllGamePanels();
+        gameObjectsPanel.SetActive(false);
         mainMenuObj.SetActive(false);
         chooseThemePanel.SetActive(true);
     }
@@ -200,9 +205,9 @@ public class GameManager : MonoBehaviour
         else
         {
             chooseThemePanel.SetActive(false);
-            menuButtonObj.SetActive(true);
+            gameObjectsPanel.SetActive(true);
         }
-
+        ActivateKeyboardButtons();
     }
     public void ThemeFinished()
     {
@@ -243,6 +248,7 @@ public class GameManager : MonoBehaviour
     private void DeactivateAllGamePanels()
     {
         chooseThemePanel.SetActive(false);
+        questionField.SetActive(false);
         youLosePanel.SetActive(false);
         keyboardParent.SetActive(false);
         anotherChanceButton.SetActive(false);
@@ -250,5 +256,13 @@ public class GameManager : MonoBehaviour
         drawManObj.SetActive(false);
         hintButtonObj.SetActive(false);
         menuButtonObj.SetActive(false);
+    }
+    private void ActivateAllGamePanels()
+    {
+        questionField.SetActive(true);
+        keyboardParent.SetActive(true);
+        drawManObj.SetActive(true);
+        hintButtonObj.SetActive(true);
+        menuButtonObj.SetActive(true);
     }
 }

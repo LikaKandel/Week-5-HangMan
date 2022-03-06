@@ -9,10 +9,16 @@ public class ButtonScrt : MonoBehaviour
     [SerializeField] private GameObject yellowLineGameobject;
     private WordManager wordManager;
     public string thisLetter { get; private set; }
+    public bool isUsed { get; private set; }
     public int num;
+
     private void Start()
     {
         wordManager = FindObjectOfType<WordManager>();
+    }
+    private void OnEnable()
+    {
+        isUsed = false;
     }
     public string InsertLetterInKey(string letter)
     {
@@ -43,11 +49,13 @@ public class ButtonScrt : MonoBehaviour
     {
         greenLineGameobject.SetActive(true);
         GetComponent<Button>().interactable = false;
+        isUsed = true;
     }
     public void DrawYellowLine()
     {
         yellowLineGameobject.SetActive(true);
         GetComponent<Button>().interactable = false;
+        isUsed = true;
     }
     public void DeactivateButton()
     {
