@@ -12,6 +12,9 @@ public class PlayerInfo : ScriptableObject
 
     public bool GameStarted;
     public bool ThemeChosen;
+
+    public int ThemeNum;
+    public bool HasStartedGuessing;
     public string Word;
     public string ThemeName;
 
@@ -25,11 +28,13 @@ public class PlayerInfo : ScriptableObject
         StickManLives = 0; 
         
         NoMistakesThisRound = true;
+        GameStarted = false;
+        ThemeChosen = false;
         PlayerLives = 3;
         WrongValue = 0;
-        GameStarted = false;
         Word = "";
         ThemeName = "SELECT";
+        HasStartedGuessing = false;
 
         AnimalsGuessedNum = 0;
         LocationsGuessedNum = 0;
@@ -41,6 +46,7 @@ public class PlayerInfo : ScriptableObject
         PlayerLives--;
         WrongValue--;
         NoMistakesThisRound = false;
+        HasStartedGuessing = true;
     }
     public string GetCurrentWord()
     {

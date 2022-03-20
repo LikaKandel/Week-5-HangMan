@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class WordGuessedInfo : MonoBehaviour
 {
@@ -12,6 +14,18 @@ public class WordGuessedInfo : MonoBehaviour
 
     [SerializeField] private WordInfo wordInfoScrpt;
 
+
+    private void Start()
+    {
+        var games = new List<Tuple<string, Nullable<double>>>()
+    {
+        new Tuple<string, Nullable<double>>("Fallout 3:    $", 13.95),
+        new Tuple<string, Nullable<double>>("GTA V:    $", 45.95),
+        new Tuple<string, Nullable<double>>("Rocket League:    $", 19.95)
+    };
+
+        games.Add(new Tuple<string, double?>("Skyrim", 15.10));
+    }
     public void DisplayWordInfo()
     {
         wordsGuessedPanel.SetActive(true);
@@ -22,6 +36,7 @@ public class WordGuessedInfo : MonoBehaviour
     }
     public void InsatiateAnimalWords()
     {
+        
         DisplayWordInfo();
         for (int i = 0; i < wordInfoScrpt.AnimalWords.Count; i++)
         {

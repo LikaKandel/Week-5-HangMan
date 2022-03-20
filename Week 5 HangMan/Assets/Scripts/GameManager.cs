@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject drawManObj;
     [SerializeField] private GameObject heartPanel;
     [SerializeField] private GameObject gameObjectsPanel;
+    [SerializeField] private GameObject quitGameWarning;
     [SerializeField] private Animator warningPopAnim;
 
     [Header("Buttons")]
@@ -38,6 +39,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private WordManager wordManager;
     [SerializeField] private KeyBoard keyboard;
     [SerializeField] private DrawMan drawMan;
+    [SerializeField] private Themes themes;
+    private bool _hasReadInfo;
 
     public  bool gameStarted { get; private set; }
 
@@ -49,63 +52,53 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ChooseThemeWarningCoroutine());
             return;
         }
-        gameObjectsPanel.SetActive(true);
-        drawManObj.SetActive(true);
-        //chooseThemePanel.SetActive(false);
-        questionField.SetActive(true);
-        keyboardParent.SetActive(true);
-        hintButtonObj.SetActive(true);
-        menuButtonObj.SetActive(true);
-        playerInfo.NoMistakesThisRound = true;
         mainMenuObj.SetActive(false);
-        gameStarted = true;
-
+        gameObjectsPanel.SetActive(true);
+        playerInfo.NoMistakesThisRound = true;
         wordManager.SelectNewWord();
+        gameStarted = true;
+        _hasReadInfo = false;
+
+        _wantsQuit = false;
+        _wantsOtherTheme = false;
         keyboard.ChooseLettersNeeded(playerInfo.GetCurrentWord());
     }
 
     public void StartMenu()
     {
         playerInfo.ResetGame();
-        playerInfo.ThemeChosen = false;
         mainMenuObj.SetActive(true);
         heartPanel.SetActive(true);
         gameStarted = false;
     }
     public void YouLost()
     {
-        ToggleUI("LosePanel");
+        if (youLosePanel.activeSelf)
+        {
+            youLosePanel.SetActive(false);
+            anotherChanceButton.SetActive(false);
+        }
+        else if (!youLosePanel.activeSelf)
+        {
+            youLosePanel.SetActive(true);
+            if (playerInfo.PlayerLives > 0)
+            {
+                anotherChanceButton.SetActive(true);
+            }
+        }
     }
 
     public void ToggleUI(string gameobjectName)
     {
         switch (gameobjectName)
         {
-            case "LosePanel":
-                if (youLosePanel.activeSelf)
-                {
-                    youLosePanel.SetActive(false);
-                    anotherChanceButton.SetActive(false);
-                }
-                else if (!youLosePanel.activeSelf)
-                {
-                    youLosePanel.SetActive(true);
-                    if (playerInfo.PlayerLives > 0)
-                    {
-                       anotherChanceButton.SetActive(true);
-                    }
-                }
-                break;
-
             case "Menu":
                 if (menuObj.activeSelf)
                 {
                     menuObj.SetActive(false);
-                    ActivateKeyboardButtons();
                 }
                 else
                 {
-                    DeactivateKeyboardButtons();
                     menuObj.SetActive(true);
                 }
                 break;
@@ -115,6 +108,11 @@ public class GameManager : MonoBehaviour
                 break;
 
         }
+    }
+    public void ToggleObj(GameObject obj)
+    {
+        if (obj.activeSelf) obj.SetActive(false);
+        else obj.SetActive(true);
     }
     public void OneMoreChance() // another chance button when "lost game"
     {
@@ -129,20 +127,23 @@ public class GameManager : MonoBehaviour
     public void MainMenuButton()
     {
         menuObj.SetActive(false);
-        DeactivateAllGamePanels();
+        gameObjectsPanel.SetActive(false);
         mainMenuObj.SetActive(true);
     }
-    public void QuitGameButton()
-    {
-        DeactivateAllGamePanels();
-        gameStarted = false;
-        playerInfo.ResetGame();
-        menuObj.SetActive(false);
-        mainMenuObj.SetActive(true);
-        playerInfo.ResetGame();
 
+    public void ToggleMenu()
+    {
+        if (menuObj.activeSelf == true)
+        {
+            menuObj.SetActive(false);
+            ActivateKeyboardButtons();
+        }
+        else
+        {
+            menuObj.SetActive(true);
+            DeactivateKeyboardButtons();
+        }
     }
-    
     public void CheckWrongValue()
     {
         if (playerInfo.NoMistakesThisRound && playerInfo.StickManLives > 0)
@@ -151,7 +152,7 @@ public class GameManager : MonoBehaviour
             drawMan.UpdateStickmanState();
         }
     }
-    public void WrongLetterChacked() //not ui
+    public void WrongLetterChecked() 
     {
         playerInfo.WrongValue++;
         playerInfo.AddBodyPart();
@@ -165,21 +166,81 @@ public class GameManager : MonoBehaviour
         playAgainField.SetActive(true);
         DeactivateKeyboardButtons();
     }
-
     public void ChooseAnotherTheme()
     {
         gameEnded.SetActive(false);
         chooseThemePanel.SetActive(true);
         menuObj.SetActive(false);
     }
+    private bool _wantsQuit;
+    public void QuitGameButton()
+    {
+        _wantsQuit = true;
+        if (playerInfo.HasStartedGuessing && !_hasReadInfo)
+        {
+            quitGameWarning.SetActive(true);
+            _hasReadInfo = true;
+            return;
+        }
+        gameObjectsPanel.SetActive(false);
+        gameStarted = false;
+        playerInfo.ResetGame();
+        menuObj.SetActive(false);
+        mainMenuObj.SetActive(true);
+        playerInfo.ResetGame();
+        _hasReadInfo = false;
 
+    }
+    
+    private bool _wantsOtherTheme;
     public void OpenThemePanel()
     {
-        DeactivateKeyboardButtons();
+        _wantsOtherTheme = true;
+        if (playerInfo.HasStartedGuessing && !_hasReadInfo)
+        {
+            quitGameWarning.SetActive(true);
+            _hasReadInfo = true;
+            return;
+        }
         menuObj.SetActive(false);
         gameObjectsPanel.SetActive(false);
         mainMenuObj.SetActive(false);
         chooseThemePanel.SetActive(true);
+        _hasReadInfo = false;
+    }
+    public void QuitCurGame()
+    {
+        if (_wantsOtherTheme)
+        {
+            playerInfo.StickManLives = 0;
+            drawMan.UpdateStickmanState();
+            menuObj.SetActive(false);
+            gameObjectsPanel.SetActive(false);
+            mainMenuObj.SetActive(false);
+            chooseThemePanel.SetActive(true);
+            quitGameWarning.SetActive(false);
+            _wantsOtherTheme = false;
+        }
+        else if (_wantsQuit)
+        {
+            playerInfo.StickManLives = 0;
+            drawMan.UpdateStickmanState();
+            gameObjectsPanel.SetActive(false);
+            quitGameWarning.SetActive(false);
+            gameStarted = false;
+            playerInfo.ResetGame();
+            menuObj.SetActive(false);
+            mainMenuObj.SetActive(true);
+            _wantsQuit = false;
+            playerInfo.ResetGame();
+
+        }
+    }
+    public void ContinueGame()
+    {
+        _hasReadInfo = false;
+        menuObj.SetActive(false);
+
     }
     public void CloseThemePanel()
     {
@@ -188,19 +249,11 @@ public class GameManager : MonoBehaviour
             mainMenuObj.SetActive(true);
             chooseThemePanel.SetActive(false);
             playerInfo.StickManLives = 0;
-            if (drawMan.gameObject.activeSelf)
-            {
-                drawMan.UpdateStickmanState();
-            }
         }
-        else if (!chooseThemePanel.GetComponent<ChooseTheme>().ThemeCurrentlyPlaying)
+        else if (!themes.WordThemes[playerInfo.ThemeNum].CurrentlyPlaying)
         {
             chooseThemePanel.SetActive(false);
             playerInfo.StickManLives = 0;
-            if (drawMan.gameObject.activeSelf)
-            {
-               drawMan.UpdateStickmanState();
-            }
         }
         else
         {
@@ -219,7 +272,7 @@ public class GameManager : MonoBehaviour
     }
     public void SaveScores()
     {
-        playerInfo.AddWordGuessedNum();
+        //playerInfo.AddWordGuessedNum();
     }
     private void DeactivateKeyboardButtons()
     {
@@ -245,24 +298,5 @@ public class GameManager : MonoBehaviour
         startButton.interactable = true;
         warningPopAnim.enabled = false ;
     }
-    private void DeactivateAllGamePanels()
-    {
-        chooseThemePanel.SetActive(false);
-        questionField.SetActive(false);
-        youLosePanel.SetActive(false);
-        keyboardParent.SetActive(false);
-        anotherChanceButton.SetActive(false);
-        gameEnded.SetActive(false);
-        drawManObj.SetActive(false);
-        hintButtonObj.SetActive(false);
-        menuButtonObj.SetActive(false);
-    }
-    private void ActivateAllGamePanels()
-    {
-        questionField.SetActive(true);
-        keyboardParent.SetActive(true);
-        drawManObj.SetActive(true);
-        hintButtonObj.SetActive(true);
-        menuButtonObj.SetActive(true);
-    }
+    
 }

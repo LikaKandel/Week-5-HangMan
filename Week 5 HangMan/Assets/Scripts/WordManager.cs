@@ -16,6 +16,7 @@ public class WordManager : MonoBehaviour
 
     [SerializeField] private ChooseTheme chooseThemeScrpt;
     [SerializeField] private WordInfo wordInfo;
+    [SerializeField] private Themes themes;
 
     public int WordCount { get; set; }
     public bool hintAllowed { get; private set; } //relace from "hints this round
@@ -36,10 +37,10 @@ public class WordManager : MonoBehaviour
     }
     public void ChooseTheme(int themeNum)
     {
-            _lastThemeListNum = themeNum;
+        _lastThemeListNum = themeNum;
         if (!gameManager.gameStarted)
         {
-            _wordsList = themeWords[themeNum].ShuffleMyList();
+            _wordsList = themes.WordThemes[themeNum].ShuffleMyList();
         }
         else
         {
@@ -69,7 +70,7 @@ public class WordManager : MonoBehaviour
 
     public void GetButtonLetter(Button button)
     {
-
+        playerInfo.HasStartedGuessing = true;
         soundManager.PlaySound(Random.Range(0, 2));
         string buttonLetter = button.GetComponentInChildren<Text>().text;
         ButtonScrt thisButton = button.GetComponent<ButtonScrt>();
@@ -93,7 +94,7 @@ public class WordManager : MonoBehaviour
         if (_correctLetterValue >= _neededCorrectCount && timesplayedVaule >= _wordsList.Count)
         {
             gameManager.ThemeFinished();
-            chooseThemeScrpt.DeactivateTheme(playerInfo.ThemeName);
+            themes.WordThemes[playerInfo.ThemeNum].ThemeDeactivated = true;//
             ChoosingAnotherTheme();
         }
         if (_correctLetterValue >= _neededCorrectCount && WordCount < _wordsList.Count)
@@ -116,6 +117,7 @@ public class WordManager : MonoBehaviour
     }
     public void GetHintLetter(string letter, int hintNumAllowed)
     {
+        playerInfo.HasStartedGuessing = true;
         if (hintNumAllowed < 1 || !hintAllowed) return;
         for (int i = 0; i < wordLettersChars.Length; i++)
         {
@@ -134,7 +136,7 @@ public class WordManager : MonoBehaviour
     }
     private void WrongLetter()
     {
-        gameManager.WrongLetterChacked();
+        gameManager.WrongLetterChecked();
     }
     public void PrepareNewWord()
     {
@@ -151,15 +153,14 @@ public class WordManager : MonoBehaviour
     }
     public void ChoosingAnotherTheme()
     {
-        if (!chooseThemeScrpt.ThemeCurrentlyPlaying) return;
+        if (themes.WordThemes[playerInfo.ThemeNum].CurrentlyPlaying) return;
         _correctLetterValue = 0;
         _neededCorrectCount = 0;
         WordCount = 0;
-        hintAllowed = false;
+        hintAllowed = true;
         if (!gameManager.gameStarted)
         {
             ClearChildren();
-            hintAllowed = true;
         }
     }
     public void ShowNextWord()
@@ -184,16 +185,16 @@ public class WordManager : MonoBehaviour
     public void SetNextWord()
     {
         SaveWordInfo();
-        ClearChildren();
         ShowNextWord();
         if (gameManager.gameStarted) hintAllowed = false;
         else hintAllowed = true;
         playerInfo.NoMistakesThisRound = true;
+        playerInfo.HasStartedGuessing = false;
     }
     public void SelectNewWord()
     {
-        if (gameManager.gameStarted) hintAllowed = false;
-        else hintAllowed = true;
+        ChooseTheme(playerInfo.ThemeNum);
+        hintAllowed = true;
         _correctLetterValue = 0;
         _neededCorrectCount = 0;
         PrepareNewWord();

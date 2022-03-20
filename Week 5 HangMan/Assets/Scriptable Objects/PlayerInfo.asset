@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: PlayerInfo
   m_EditorClassIdentifier: 
   StickManLives: 0
-  WrongValue: 1
+  WrongValue: 0
   PlayerLives: 3
   NoMistakesThisRound: 1
   CorrectLetterAmount: 0
   WrongLetterAmount: 0
   GameStarted: 0
-  ThemeChosen: 1
-  Word: GEMSBOK
-  ThemeName: ANIMALS
-  AnimalsGuessedNum: 3
+  ThemeChosen: 0
+  HasStartedGuessing: 0
+  Word: 
+  ThemeName: SELECT
+  AnimalsGuessedNum: 0
   LocationsGuessedNum: 0
   RandomGuessedNum: 0
