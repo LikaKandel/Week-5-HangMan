@@ -30,13 +30,17 @@ public class WordManager : MonoBehaviour
     private List<string> _unusedWords;
 
 
+    private int rightLetters;
+    private int wrongLetters;
+
     private void Start()
     {
         hintAllowed = true;
         WordCount = 0;
     }
-    public void ChooseTheme(int themeNum)
+    public void ChooseTheme()
     {
+        int themeNum = playerInfo.ThemeNum;
         _lastThemeListNum = themeNum;
         if (!gameManager.gameStarted)
         {
@@ -68,7 +72,7 @@ public class WordManager : MonoBehaviour
         }
     }
 
-    public void GetButtonLetter(Button button)
+    public void GetButtonInfo(Button button)
     {
         playerInfo.HasStartedGuessing = true;
         soundManager.PlaySound(Random.Range(0, 2));
@@ -193,7 +197,8 @@ public class WordManager : MonoBehaviour
     }
     public void SelectNewWord()
     {
-        ChooseTheme(playerInfo.ThemeNum);
+        ChooseTheme();
+       // ChooseTheme(playerInfo.ThemeNum);
         hintAllowed = true;
         _correctLetterValue = 0;
         _neededCorrectCount = 0;
@@ -207,7 +212,8 @@ public class WordManager : MonoBehaviour
     public void RetryWhenLost()
     {
         ChoosingAnotherTheme();
-        ChooseTheme(_lastThemeListNum);
+       // ChooseTheme(_lastThemeListNum);
+        ChooseTheme();
         PrepareNewWord();
         StringToChar();
         CalculateCorrectLetterValue();
@@ -216,20 +222,6 @@ public class WordManager : MonoBehaviour
 
     private void SaveWordInfo()
     {
-        switch (playerInfo.ThemeName)
-        {
-            case "ANIMALS":
-                wordInfo.AddAnimalInfo(currentWord, _correctLetterValue, wordLettersChars.Length - _correctLetterValue);
-                break;
-            case "LOCATIONS":
-                wordInfo.AddLocationInfo(currentWord, _correctLetterValue, wordLettersChars.Length - _correctLetterValue);
-                break;
-            case "RANDOM":
-                wordInfo.AddRandomInfo(currentWord, _correctLetterValue, wordLettersChars.Length - _correctLetterValue);
-                break;
-
-            default:
-                break;
-        }
+        themes.WordThemes[playerInfo.ThemeNum].SaveWordInfo(_wordsList[0], rightLetters, wrongLetters);
     }
 }

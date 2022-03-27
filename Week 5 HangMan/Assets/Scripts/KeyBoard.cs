@@ -11,6 +11,8 @@ public class KeyBoard : MonoBehaviour
     private List<string> _lettersNeeded = new List<string>();
     private List<string> _lettersToDisplay = new List<string>();
 
+    public List<ButtonScrt> buttonScriptList = new List<ButtonScrt>();
+
     [SerializeField] private ButtonScrt buttObj;
 
     [Header("word lenght checkers")]
@@ -29,7 +31,6 @@ public class KeyBoard : MonoBehaviour
         }
         else return buttonsLenghtMinValue;
     }
-
 
     public void ChooseLettersNeeded(string chosenWord)
     {
@@ -71,6 +72,7 @@ public class KeyBoard : MonoBehaviour
         {
             ButtonScrt k  = Instantiate(buttObj, gameObject.transform);
             k.InsertLetterInKey(_lettersToDisplay[i]);
+            buttonScriptList.Add(k);
         }
     }
 
@@ -87,6 +89,21 @@ public class KeyBoard : MonoBehaviour
         for (int i = 0; i < gameObject.transform.childCount; i++)
         {
             Destroy(gameObject.transform.GetChild(i).gameObject);
+            buttonScriptList.RemoveAt(0);
+        }
+    }
+    public void ActivateAllButtons()
+    {
+        for (int i = 0; i < buttonScriptList.Count; i++)
+        {
+            buttonScriptList[i].ActivateButton();
+        }
+    }
+    public void DeactivateAllButtons()
+    {
+        for (int i = 0; i < buttonScriptList.Count; i++)
+        {
+            buttonScriptList[i].DeactivateButton();
         }
     }
 

@@ -7,18 +7,23 @@ public class ButtonScrt : MonoBehaviour
     [SerializeField] private GameObject redLineGameobject;
     [SerializeField] private GameObject greenLineGameobject;
     [SerializeField] private GameObject yellowLineGameobject;
+
+    private Button thisButton;
+
     private WordManager wordManager;
     public string thisLetter { get; private set; }
     public bool isUsed { get; private set; }
-    public int num;
 
-    private void Start()
+    public int num { get; set; }
+
+    private void Awake()
     {
         wordManager = FindObjectOfType<WordManager>();
     }
     private void OnEnable()
     {
         isUsed = false;
+        thisButton = GetComponent<Button>();
     }
     public string InsertLetterInKey(string letter)
     {
@@ -29,41 +34,39 @@ public class ButtonScrt : MonoBehaviour
 
     public void GetLetter()
     {
-        Button button = GetComponent<Button>();
-        wordManager.GetButtonLetter(button);
+        wordManager.GetButtonInfo(thisButton);
     }
 
     public Button ReturnButton()
     {
-        Button button = GetComponent<Button>();
-        return button;
+        return thisButton;
     }
 
     public void DrawRedLine()
     {
         redLineGameobject.SetActive(true);
-        GetComponent<Button>().interactable = false;
+        thisButton.interactable = false;
     }
 
     public void DrawGreenLine() 
     {
         greenLineGameobject.SetActive(true);
-        GetComponent<Button>().interactable = false;
+        thisButton.interactable = false;
         isUsed = true;
     }
     public void DrawYellowLine()
     {
         yellowLineGameobject.SetActive(true);
-        GetComponent<Button>().interactable = false;
+        thisButton.interactable = false;
         isUsed = true;
     }
     public void DeactivateButton()
     {
-        GetComponent<Button>().interactable = false;
+        thisButton.interactable = false;
     }
-    public void ActivateButtons()
+    public void ActivateButton()
     {
-        GetComponent<Button>().interactable = true;
+        thisButton.interactable = false;
     }
 
 }

@@ -136,12 +136,12 @@ public class GameManager : MonoBehaviour
         if (menuObj.activeSelf == true)
         {
             menuObj.SetActive(false);
-            ActivateKeyboardButtons();
+            keyboard.ActivateAllButtons();
         }
         else
         {
             menuObj.SetActive(true);
-            DeactivateKeyboardButtons();
+            keyboard.DeactivateAllButtons();
         }
     }
     public void CheckWrongValue()
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
     public void PlayAgainPanel()
     {
         playAgainField.SetActive(true);
-        DeactivateKeyboardButtons();
+        keyboard.DeactivateAllButtons();
     }
     public void ChooseAnotherTheme()
     {
@@ -207,6 +207,7 @@ public class GameManager : MonoBehaviour
         mainMenuObj.SetActive(false);
         chooseThemePanel.SetActive(true);
         _hasReadInfo = false;
+        print("got till the end");
     }
     public void QuitCurGame()
     {
@@ -242,7 +243,7 @@ public class GameManager : MonoBehaviour
         menuObj.SetActive(false);
 
     }
-    public void CloseThemePanel()
+    public void ChooseThemeButt()
     {
         if (!gameStarted)
         {
@@ -260,7 +261,7 @@ public class GameManager : MonoBehaviour
             chooseThemePanel.SetActive(false);
             gameObjectsPanel.SetActive(true);
         }
-        ActivateKeyboardButtons();
+        keyboard.ActivateAllButtons();
     }
     public void ThemeFinished()
     {
@@ -268,26 +269,13 @@ public class GameManager : MonoBehaviour
         gameEnded.SetActive(true);
         hintButtonObj.SetActive(false);
         menuButtonObj.SetActive(false);
-        DeactivateKeyboardButtons();
+        keyboard.DeactivateAllButtons();
     }
     public void SaveScores()
     {
         //playerInfo.AddWordGuessedNum();
     }
-    private void DeactivateKeyboardButtons()
-    {
-        for (int i = 0; i < keyboardParent.transform.childCount; i++)
-        {
-            keyboardParent.transform.GetChild(i).GetComponent<ButtonScrt>().DeactivateButton();
-        }
-    }
-    private void ActivateKeyboardButtons()
-    {
-        for (int i = 0; i < keyboardParent.transform.childCount; i++)
-        {
-            keyboardParent.transform.GetChild(i).GetComponent<ButtonScrt>().ActivateButtons();
-        }
-    }
+    
     private IEnumerator ChooseThemeWarningCoroutine()
     {
         startButton.interactable = false;

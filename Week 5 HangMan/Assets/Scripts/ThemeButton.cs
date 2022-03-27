@@ -21,9 +21,13 @@ public class ThemeButton : MonoBehaviour
         if (playerInfo.ThemeName == thisWord.ThemeName) DeactivateButton();
         else ActivateButton();
     }
+    private void OnEnable()
+    {
+        thisButton = gameObject.GetComponent<Button>();
+    }
     public void ChooseTheme() // onclick
     {
-        if (thisWord.ThemeDeactivated) GetComponent<Button>().enabled = false;
+        if (thisWord.ThemeDeactivated) thisButton.enabled = false;
         if (playerInfo.ThemeName != thisWord.ThemeName)
         {
             playerInfo.ThemeNum = _themeArrNum;
@@ -50,7 +54,7 @@ public class ThemeButton : MonoBehaviour
         themeNameText.text = thisWord.ThemeName;
         _themeWordMaxCount = thisWord.WordsList.Count;
         GetThemeSize(_themeWordMaxCount);
-        thisButton = gameObject.GetComponent<Button>();
+        //thisButton = gameObject.GetComponent<Button>();
         print("finished script");
     }
     
