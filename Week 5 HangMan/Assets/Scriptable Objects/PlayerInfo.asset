@@ -12,17 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76b435e3f89aa84b98385895def498e, type: 3}
   m_Name: PlayerInfo
   m_EditorClassIdentifier: 
-  StickManLives: 0
-  WrongValue: 0
-  PlayerLives: 3
-  NoMistakesThisRound: 1
-  CorrectLetterAmount: 0
-  WrongLetterAmount: 0
+  StickManLives: 5
+  WrongValue: -1
+  PlayerLives: 1
+  NoMistakesThisRound: 0
   GameStarted: 0
-  ThemeChosen: 0
-  HasStartedGuessing: 0
-  Word: 
-  ThemeName: SELECT
-  AnimalsGuessedNum: 0
-  LocationsGuessedNum: 0
-  RandomGuessedNum: 0
+  ThemeChosen: 1
+  HasFinishedCurrentTheme: 1
+  ThemeNum: 1
+  HasStartedGuessing: 1
+  Word: GREECE
+  ThemeName: LOCATIONS
+  Themes: {fileID: 11400000, guid: c8c2e5a366b7ef34b93857d28c4822eb, type: 2}

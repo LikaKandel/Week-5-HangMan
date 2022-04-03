@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Project.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject quitGameWarning;
     [SerializeField] private Animator warningPopAnim;
 
+
     [Header("Buttons")]
     [SerializeField] private GameObject anotherChanceButton;
     [SerializeField] private GameObject hintButtonObj;
@@ -43,8 +45,12 @@ public class GameManager : MonoBehaviour
     private bool _hasReadInfo;
 
     public  bool gameStarted { get; private set; }
+    private int _currentThemeNum;
 
-
+    private void Start()
+    {
+        playerInfo.ResetGame();
+    }
     public void StartPlaying()
     {
         if (!playerInfo.ThemeChosen)
@@ -55,13 +61,16 @@ public class GameManager : MonoBehaviour
         mainMenuObj.SetActive(false);
         gameObjectsPanel.SetActive(true);
         playerInfo.NoMistakesThisRound = true;
-        wordManager.SelectNewWord();
         gameStarted = true;
         _hasReadInfo = false;
-
+        _currentThemeNum = playerInfo.ThemeNum;
         _wantsQuit = false;
         _wantsOtherTheme = false;
-        keyboard.ChooseLettersNeeded(playerInfo.GetCurrentWord());
+
+        if (gameStarted)
+        {
+            keyboard.SpawnNewBoard();
+        }
     }
 
     public void StartMenu()
@@ -73,6 +82,7 @@ public class GameManager : MonoBehaviour
     }
     public void YouLost()
     {
+        keyboard.DeactivateAllButtons();
         if (youLosePanel.activeSelf)
         {
             youLosePanel.SetActive(false);
@@ -116,6 +126,7 @@ public class GameManager : MonoBehaviour
     }
     public void OneMoreChance() // another chance button when "lost game"
     {
+        keyboard.ActivateAllButtons();
         youLosePanel.SetActive(false);
         playerInfo.GiveOneMoreChance();
         drawMan.UpdateStickmanState();
@@ -136,7 +147,7 @@ public class GameManager : MonoBehaviour
         if (menuObj.activeSelf == true)
         {
             menuObj.SetActive(false);
-            keyboard.ActivateAllButtons();
+            //keyboard.ActivateAllButtons();
         }
         else
         {
@@ -144,21 +155,16 @@ public class GameManager : MonoBehaviour
             keyboard.DeactivateAllButtons();
         }
     }
-    public void CheckWrongValue()
+    public void NextWord()
     {
-        if (playerInfo.NoMistakesThisRound && playerInfo.StickManLives > 0)
-        {
-            playerInfo.RemoveManPart();
-            drawMan.UpdateStickmanState();
-        }
+        playAgainField.SetActive(false);
+        if (playerInfo.StickManLives < 0) return;
+        drawMan.UpdateStickmanState();
     }
     public void WrongLetterChecked() 
     {
-        playerInfo.WrongValue++;
-        playerInfo.AddBodyPart();
-        playerInfo.NoMistakesThisRound = false;
         drawMan.UpdateStickmanState();
-        if (playerInfo.WrongValue >= stickManlives) YouLost();
+        if (playerInfo.StickManLives >= stickManlives) YouLost();
     }
 
     public void PlayAgainPanel()
@@ -187,7 +193,6 @@ public class GameManager : MonoBehaviour
         playerInfo.ResetGame();
         menuObj.SetActive(false);
         mainMenuObj.SetActive(true);
-        playerInfo.ResetGame();
         _hasReadInfo = false;
 
     }
@@ -196,18 +201,11 @@ public class GameManager : MonoBehaviour
     public void OpenThemePanel()
     {
         _wantsOtherTheme = true;
-        if (playerInfo.HasStartedGuessing && !_hasReadInfo)
-        {
-            quitGameWarning.SetActive(true);
-            _hasReadInfo = true;
-            return;
-        }
-        menuObj.SetActive(false);
         gameObjectsPanel.SetActive(false);
+        menuObj.SetActive(false);
         mainMenuObj.SetActive(false);
         chooseThemePanel.SetActive(true);
         _hasReadInfo = false;
-        print("got till the end");
     }
     public void QuitCurGame()
     {
@@ -215,12 +213,11 @@ public class GameManager : MonoBehaviour
         {
             playerInfo.StickManLives = 0;
             drawMan.UpdateStickmanState();
-            menuObj.SetActive(false);
-            gameObjectsPanel.SetActive(false);
-            mainMenuObj.SetActive(false);
-            chooseThemePanel.SetActive(true);
+            chooseThemePanel.SetActive(false);
+            gameObjectsPanel.SetActive(true);
             quitGameWarning.SetActive(false);
             _wantsOtherTheme = false;
+            keyboard.SpawnNewBoard();
         }
         else if (_wantsQuit)
         {
@@ -251,20 +248,34 @@ public class GameManager : MonoBehaviour
             chooseThemePanel.SetActive(false);
             playerInfo.StickManLives = 0;
         }
-        else if (!themes.WordThemes[playerInfo.ThemeNum].CurrentlyPlaying)
+        else if (gameStarted && playerInfo.ThemeNum != _currentThemeNum)
         {
+            if (playerInfo.HasStartedGuessing && !_hasReadInfo)
+            {
+                quitGameWarning.SetActive(true);
+                _hasReadInfo = true;
+                return;
+            }
             chooseThemePanel.SetActive(false);
-            playerInfo.StickManLives = 0;
+            StartPlaying();
+            wordManager.StartGame();
+            keyboard.SpawnNewBoard();
+
         }
-        else
+        else if (playerInfo.ThemeNum == _currentThemeNum)
         {
-            chooseThemePanel.SetActive(false);
             gameObjectsPanel.SetActive(true);
+            chooseThemePanel.SetActive(false);
+            menuObj.SetActive(false);
+            mainMenuObj.SetActive(false);//have to check
         }
-        keyboard.ActivateAllButtons();
     }
     public void ThemeFinished()
     {
+        if (playerInfo.HasFinishedCurrentTheme)
+        {
+            //add go to menu button
+        }
         playAgainField.SetActive(false);
         gameEnded.SetActive(true);
         hintButtonObj.SetActive(false);

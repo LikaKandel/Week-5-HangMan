@@ -7,44 +7,35 @@ public class PlayerInfo : ScriptableObject
     public int WrongValue;
     public int PlayerLives;
     public bool NoMistakesThisRound;
-    public int CorrectLetterAmount;
-    public int WrongLetterAmount;
 
     public bool GameStarted;
     public bool ThemeChosen;
+    public bool HasFinishedCurrentTheme;
 
     public int ThemeNum;
     public bool HasStartedGuessing;
     public string Word;
     public string ThemeName;
 
-    public int AnimalsGuessedNum;
-    public int LocationsGuessedNum;
-    public int RandomGuessedNum;
+    public Themes Themes;
+    private Words Words;
 
-
+    
     public void ResetGame()
     {
         StickManLives = 0; 
-        
         NoMistakesThisRound = true;
         GameStarted = false;
-        ThemeChosen = false;
         PlayerLives = 3;
         WrongValue = 0;
         Word = "";
         ThemeName = "SELECT";
         HasStartedGuessing = false;
-
-        AnimalsGuessedNum = 0;
-        LocationsGuessedNum = 0;
-        RandomGuessedNum = 0;
     }
+
     public void GiveOneMoreChance()
     {
         RemoveManPart();
-        PlayerLives--;
-        WrongValue--;
         NoMistakesThisRound = false;
         HasStartedGuessing = true;
     }
@@ -52,50 +43,22 @@ public class PlayerInfo : ScriptableObject
     {
         return Word;
     }
-    
+    public void SetCurrentTheme(int themeNum)
+    {
+        Words = Themes.WordThemes[themeNum];
+        ThemeChosen = true;
+        ThemeName = Words.ThemeName;
+        ThemeNum = themeNum;
+    }
     public void RemoveManPart()
     {
+        if (StickManLives < 0 || StickManLives > 7) return;
         StickManLives--;
     }
     public void AddBodyPart()
     {
+        if (StickManLives >= 7) return;
         StickManLives++;
-    }
-    public void SetVarialbles()
-    {
-        LoadHighScore("HighScore");
-        ResetGame();
-    }
-    public void AddWordGuessedNum()
-    {
-        switch (ThemeName)
-        {
-            case "ANIMALS":
-                AnimalsGuessedNum++;
-                break;
-            case "LOCATIONS":
-                LocationsGuessedNum++;
-                break;
-            case "RANDOM":
-                RandomGuessedNum++;
-                break;
-            default:
-                break;
-        }
-    }
-    public void SaveScores()
-    {
-        PlayerPrefs.SetInt("Animals", AnimalsGuessedNum);
-        PlayerPrefs.SetInt("Locations", LocationsGuessedNum);
-        PlayerPrefs.SetInt("Random", RandomGuessedNum);
-    }
-    public void LoadHighScore(string name)
-    {
-        PlayerPrefs.GetInt(name);
-    }
-    public void ChooseThemeName(string Name)
-    {
-        ThemeChosen = true;
-        ThemeName = Name;
+        NoMistakesThisRound = false;
     }
 }

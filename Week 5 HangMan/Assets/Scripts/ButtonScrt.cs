@@ -66,7 +66,16 @@ public class ButtonScrt : MonoBehaviour
     }
     public void ActivateButton()
     {
-        thisButton.interactable = false;
+        thisButton.interactable = true;
+    }
+    public void ClearValues()
+    {
+        isUsed = false;
+        redLineGameobject.SetActive(false);
+        greenLineGameobject.SetActive(false);
+        yellowLineGameobject.SetActive(false);
+        thisButton.interactable = true;
+
     }
 
 }

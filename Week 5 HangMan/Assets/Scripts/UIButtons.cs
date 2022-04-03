@@ -24,7 +24,7 @@ public class UIButtons : MonoBehaviour
 
     public void Menu()
     {
-        wordManager.ClearChildren();
+        wordManager.ClearUnderlines();
         wordManager.ExitingCurrentGame();
         keyboard.ClearAll();
         gameManager.ChooseAnotherTheme();
@@ -35,7 +35,7 @@ public class UIButtons : MonoBehaviour
 
     public void ChooseTheme()
     {
-        wordManager.ClearChildren();
+        wordManager.ClearUnderlines();
         keyboard.ClearAll();
         wordManager.ExitingCurrentGame();
         gameManager.ChooseAnotherTheme();

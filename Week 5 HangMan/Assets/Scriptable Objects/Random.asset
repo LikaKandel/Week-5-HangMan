@@ -12,104 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f3d9475935d614db87cf06b4262133, type: 3}
   m_Name: Random
   m_EditorClassIdentifier: 
-  words:
-  - GLASS
-  - STAIRCASE
-  - DIPLOMATIC
-  - VERSION
-  - STRAIN
-  - REGARD
-  - LOOTING
-  - NATIVE
-  - CAPTURE
-  - GUERRILLA
-  - EMPIRE
-  - SUMMARY
-  - BURST
-  - ROUGH
-  - INVISIBLE
-  - RISK
-  - LEND
-  - COACH
-  - WORKSHOP
-  - BEACH
-  - EXTREME
-  - DELAY
-  - TRIANGLE
-  - WEDDING
-  - LEG DAY
-  - CRIMINALENHANCE
-  - SWING
-  - YOU ARE SUS
-  - PUSH DAY
-  - MORAL
-  - PATIENCE
-  - ATHLETE
-  - ELECTRON
-  - GALLON
-  - ENTRY
-  - MARK
-  - TWITCH
-  - STUDENT
-  - GROAN
-  - HOSPITAL
-  - CIGARETTE
-  - CONCERT
-  - FLIGHT
-  - DECIDE
-  - HOBBY
-  - CONCEDE
-  - URGE
-  - PILLOW
-  - TRAGEDY
-  - ENTRY
-  - COVERAGE
-  - PREY
-  - INDULGE
-  - ARGUMENT
-  - CULTURE
-  - GROUND
-  - LICENSE
-  - BALLET
-  - YEARN
-  - DESIGN
-  - PREACH
-  - SQUARE
-  - IMPOSTER
-  - ARCANE
-  - SWOP
-  - STICK
-  - SACRED
-  - CABLE
-  - MAJOR
-  - CARD
-  - SPECULATE
-  - CONSTRAINT
-  - FORMAL
-  - DENTIST
-  - TONE
-  - HEAVEN
-  - SLOT
-  - WINNER
-  - RUGBY
-  - DISTINCT
-  - CORRUPTION
-  - METHOD
-  - BUY
-  - EMPHASIS
-  - UNDERMINE
-  - RELEVANCE
-  - NUANCE
-  - SELLER
-  - PRIORITY
-  - WEDDING
-  - PROSPECT
-  - SLOGAN
-  - MATCH
-  - DEATH
-  - FUSS
-  - TIK TOK
-  - ELECTION
-  - DEPARTURE
-  - NONREMITTAL
-  - PHYSICAL
+  WordsList:
+  - FOOTBALL
+  ThemeName: RANDOM
+  WordsGuessedNum: 0
+  StartWordSize: 1
+  CurrentlyPlaying: 1
+  ThemeDeactivated: 0
+  SavedWords: []
+  RightLetters: 
+  WrongLetters: 

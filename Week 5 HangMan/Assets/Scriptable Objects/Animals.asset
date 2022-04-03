@@ -12,104 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f3d9475935d614db87cf06b4262133, type: 3}
   m_Name: Animals
   m_EditorClassIdentifier: 
-  words:
-  - HAWK
-  - DHOLE
-  - GOOSE
-  - TORTOISE
-  - DOLPHIN
-  - RHINOCEROS
-  - SHARK
-  - DUCK
-  - FLAMINGO
-  - GEMSBOK
-  - RHINOCEROS
-  - COCKROACH
-  - BLUE WHALE
-  - COW
-  - BEETLE
-  - OCTOPUS
-  - DONKEY
-  - BANANA SPIDER
-  - FOX
-  - CAMEL
-  - SQUID
-  - TOAD
-  - CHINOOK
-  - SQUIRREL
-  - LEOPARD
-  - CODFISH
-  - EMU
-  - OTTER
-  - CLOWNFISH
-  - SNAKE
-  - MICE
-  - CARACAL
-  - CARIBOU
-  - BISON
+  WordsList:
+  - ANDREI
+  - ZEBRA
+  - WORM
   - ELEPHAND
-  - EAGLE
-  - SOLENODON
-  - JAGUAR
-  - LIZARD
-  - KINKAJOU
-  - RABBIT
-  - IGUANA
-  - GERENUK
-  - BADGER
-  - PENGUIN
-  - WOLF
-  - SEAL
-  - HORSE
-  - SCORPION
-  - BUTTERFLY
-  - COBRA
-  - BUZZARD
-  - DRAGONFLY
-  - GEESE
-  - ANEATER
-  - MONKEY
-  - FROG
-  - SEA TURTLE
-  - SPIDER
-  - BEETLE
-  - ALLIGTOR
-  - HAMSTER
-  - GIRAFFE
-  - PARROT
-  - PIG
-  - CORNCRAKE
-  - KINGFISHER
-  - DEER
-  - CROW
-  - PUFFIN
-  - CHEETAH
-  - PELICAN
-  - DOG
-  - PLATYPUS
-  - BEAR
-  - VOLE
-  - LION
-  - ANTELOPE
+  - HHHHHHHH
   - BAT
-  - CAPYBARA
-  - GORILLA
-  - IBISBILL
-  - TIGER
-  - CHIPMUNK
-  - CHINCHILLA
-  - SWIFTLET
-  - CHIMPANZEE
-  - CRAB
-  - CAPERCAILLIE
-  - MOLES
-  - ARMADILLO
-  - GOAT
-  - COYOTE
-  - ORCA
-  - CHICKEN
-  - ADDAX
-  - CACTUS MOUSE
-  - ELK
+  - DOG
+  - MONKEY
+  - HORSE
   - OWL
-  - GUINEA PIG
+  - CAT
+  ThemeName: ANIMALS
+  WordsGuessedNum: 0
+  StartWordSize: 11
+  CurrentlyPlaying: 0
+  ThemeDeactivated: 0
+  SavedWords: []
+  RightLetters: 
+  WrongLetters: 

@@ -6,23 +6,31 @@ using System.Threading;
 
 public class KeyBoard : MonoBehaviour
 {
+    [Header("Letter Lists")]
     private List<string> _allLetters = new List<string>();
     private List<string> _notUsedLetters = new List<string>();
     private List<string> _lettersNeeded = new List<string>();
     private List<string> _lettersToDisplay = new List<string>();
 
-    public List<ButtonScrt> buttonScriptList = new List<ButtonScrt>();
+    private List<GameObject> _activeButtons = new List<GameObject>();
+    private List<ButtonScrt> _buttonScripts = new List<ButtonScrt>();
 
-    [SerializeField] private ButtonScrt buttObj;
-
-    [Header("word lenght checkers")]
+    [Header("Word Lenght Checkers")]
     [SerializeField] private int wordLenghtMax;
+    [Range(0,26)]
     [SerializeField] private int buttonsLenghtMinValue;
+    [Range(6, 26)]
     [SerializeField] private int buttonsLenghtMaxValue;
 
+    [Header("Scripts")]
     [SerializeField] private PlayerInfo playerInfo;
+    [SerializeField] private ObjectPool objectpool;
 
-    
+
+    private void Start()
+    {
+
+    }
     private int wordLenght()
     {
         if (_lettersToDisplay.Count > wordLenghtMax)
@@ -30,30 +38,32 @@ public class KeyBoard : MonoBehaviour
             return buttonsLenghtMaxValue;
         }
         else return buttonsLenghtMinValue;
+
     }
 
-    public void ChooseLettersNeeded(string chosenWord)
+    public void SpawnNewBoard()
     {
         ClearAll();
-
+        string word = playerInfo.GetCurrentWord();
         for (int i = 0; i < _allLetters.Count; i++)
         {
-            if (chosenWord.Contains(_allLetters[i])) _lettersToDisplay.Add(_allLetters[i]);
+            if (word.Contains(_allLetters[i])) _lettersToDisplay.Add(_allLetters[i]);
             else _notUsedLetters.Add(_allLetters[i]);
         }
 
         ShuffleThisList(_notUsedLetters);
+        
         CreateListOfLetters();
-
     }
 
     public void CreateListOfLetters()
     {
+        wordLenght();
         InsertCorrectLettersToList(wordLenght() - _lettersToDisplay.Count);
 
         ShuffleThisList(_lettersToDisplay);
 
-        SpawnBoard();
+        InsertButtonInfo();
 
     }
 
@@ -66,52 +76,62 @@ public class KeyBoard : MonoBehaviour
     }
 
 
-    public void SpawnBoard()
+    public void InsertButtonInfo()
     {
-        for(int i = 0; i < _lettersToDisplay.Count; i++)
+
+        if (_activeButtons.Count > 0)
         {
-            ButtonScrt k  = Instantiate(buttObj, gameObject.transform);
-            k.InsertLetterInKey(_lettersToDisplay[i]);
-            buttonScriptList.Add(k);
+            for (int i = 0; i < _activeButtons.Count; i++)
+            {
+
+                if (_activeButtons.Count > _lettersToDisplay.Count)
+                {
+                    _activeButtons.RemoveAt(0);
+                    objectpool.DeactivatePoolObj("button");
+                }
+            }
         }
+        for (int k = 0; k < _lettersToDisplay.Count; k++)
+        {
+            if (_activeButtons.Count < _lettersToDisplay.Count)
+            {
+                _activeButtons.Add(objectpool.GetKeyButton("button"));
+            }
+            _activeButtons[k].GetComponent<ButtonScrt>().InsertLetterInKey(_lettersToDisplay[k]);
+        }
+        
     }
 
     public void ClearAll()
     {
-        _lettersToDisplay.Clear();
         _lettersNeeded.Clear();
-        _notUsedLetters.Clear();
+        _lettersToDisplay.Clear();
         _allLetters.Clear();
+        _notUsedLetters.Clear();
+        foreach (GameObject button in _activeButtons)
+        {
+            button.GetComponent<ButtonScrt>().ClearValues();
+        }
         for (char letter = 'A'; letter <= 'Z'; letter++)
         {
             _allLetters.Add(letter.ToString());
         }
-        for (int i = 0; i < gameObject.transform.childCount; i++)
-        {
-            Destroy(gameObject.transform.GetChild(i).gameObject);
-            buttonScriptList.RemoveAt(0);
-        }
+        
     }
     public void ActivateAllButtons()
     {
-        for (int i = 0; i < buttonScriptList.Count; i++)
+        for (int i = 0; i < _activeButtons.Count; i++)
         {
-            buttonScriptList[i].ActivateButton();
+            _activeButtons[i].GetComponent<ButtonScrt>().ActivateButton();
         }
     }
     public void DeactivateAllButtons()
     {
-        for (int i = 0; i < buttonScriptList.Count; i++)
+        for (int i = 0; i < _activeButtons.Count; i++)
         {
-            buttonScriptList[i].DeactivateButton();
+            _activeButtons[i].GetComponent<ButtonScrt>().DeactivateButton();
         }
     }
-
-    public void PrepareForNewWord()
-    {
-        ClearAll();
-        ChooseLettersNeeded(playerInfo.GetCurrentWord());
-    }   
 
     private void ShuffleThisList(List<string> answ)
     {

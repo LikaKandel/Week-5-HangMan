@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513a9c7c869b8e6408ea406d2577bdef, type: 3}
   m_Name: Themes
   m_EditorClassIdentifier: 
-  WordThemes: []
-  ThemeName: []
+  WordThemes:
+  - {fileID: 11400000, guid: f016b0786cab9604db046d1fbb3df9d6, type: 2}
+  - {fileID: 11400000, guid: 4c189d8636c7e0d45adf88db78d0b749, type: 2}
+  - {fileID: 11400000, guid: c26b75bbf0c84194882a145a8412ed8a, type: 2}

@@ -12,104 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f3d9475935d614db87cf06b4262133, type: 3}
   m_Name: Locations
   m_EditorClassIdentifier: 
-  words:
-  - ARGENTINA
-  - ITALY
-  - SYRIA
-  - GAMBIA
-  - IRELAND
-  - PAKISTAN
-  - BOLIVIA
-  - MOROCCO
-  - GERMANY
-  - LAOS
-  - ARMENIA
-  - ESTONIA
-  - BOTSWANA
-  - NORTH KOREA
-  - GABON
-  - BELGIUM
-  - THAILAND
-  - ETHIOPIA
-  - EGYPT
-  - PHILIPPINESS
-  - LIBYA
-  - BARBADOS
-  - IRAQ
-  - CUBA
-  - NEPAL
-  - DOMINICA
-  - COMOROS
-  - RWANDA
-  - SAN MARINO
-  - AZERBAIJAN
-  - HOLY SEE
-  - NETHERLANDS
-  - BELARUS
-  - MADAGASCAR
-  - UGANDA
-  - SWEDEN
-  - GEORGIA
-  - VIETNAM
-  - NAURU
-  - MONACO
-  - BHUTAN
-  - KENYA
-  - CANADA
-  - TONGA
-  - DEMARK
-  - INDONESIA
-  - NIGERIA
-  - ARGENTINA
-  - NORWAY
-  - SLOVAKIA
-  - MONTENEGRO
-  - ZAMBIA
-  - TUVALU
-  - SAMOA
+  WordsList:
   - GREECE
-  - AUSTRALIA
-  - CHINA
-  - MALI
-  - TURKEY
-  - AMERICA
-  - LOL LOL
-  - EL SALVADOR
-  - COLOMBIA
-  - FRANCE
-  - LAOS
-  - BELIZE
-  - SINGAPORE
-  - CHILE
-  - LITHUANIA
-  - PANAMA
-  - CROATIA
-  - COSTA RICA
-  - MALAWI
-  - KIRIBATI
-  - NAMIBIA
-  - FINLAND
-  - SERBIA
-  - CHAD
-  - TUNISIA
-  - SENEGAL
-  - PERU
-  - ZIMBABWE
-  - ITALY
-  - SPAIN
-  - SOUTH AFRICA
-  - MONGOLIA
-  - SWITZERLAND
-  - BAHAMAS
-  - MEXICO
-  - YEMEN
-  - LESOTHO
-  - IRAN
-  - CYPRUS
+  - RUSSIA
+  - PORTUGAL
+  - POLAND
+  - GERMANY
   - UKRAINE
-  - JAMAICA
-  - BENIN
-  - JAPAN
-  - BANGLADESH
-  - KAZAKHSTAN
-  - NEWZEALAND
+  - ITALY
+  - FRANCE
+  - GEORGIA
+  - ROMANIA
+  ThemeName: LOCATIONS
+  WordsGuessedNum: 0
+  StartWordSize: 9
+  CurrentlyPlaying: 1
+  ThemeDeactivated: 0
+  SavedWords: []
+  RightLetters: 
+  WrongLetters: 

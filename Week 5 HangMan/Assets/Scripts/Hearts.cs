@@ -20,30 +20,34 @@ public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private bool mouse_over;
     private bool doAnimate;
 
+    private bool _countDown;
+
+    private const int _playerStartLives = 3;
+
     private void Start()
     {
-        float minutesToSeconds = startReganarationTimeMinutes *= 60;
-        timeReganarationNum = minutesToSeconds;
+        timeReganarationNum = startReganarationTimeMinutes;
+        //float minutesToSeconds = startReganarationTimeMinutes *= 60;
+        //timeReganarationNum = minutesToSeconds;
         doAnimate = false;
     }
     private void Update()
     {
-        if (playerInfo.PlayerLives < 3)
+        if (_countDown)
         {
             timeReganarationNum -= Time.deltaTime;
 
             if (timeReganarationNum <= 0)
             {
-                ShowReganaratedHeart();
-                playerInfo.PlayerLives += 1;
                 timeReganarationNum = startReganarationTimeMinutes;
+                IncreaseLives();
             }
         }
         if (mouse_over)
         {
             doAnimate = true;
-            if (playerInfo.PlayerLives < 3) DisplayTimeLeft(timeReganarationNum);
-            else 
+            if (playerInfo.PlayerLives < _playerStartLives) DisplayTimeLeft(timeReganarationNum);
+            else if (playerInfo.PlayerLives == _playerStartLives)
             {
                 countdownPanel.SetActive(true);
                 countdownText.text = "FULL";
@@ -51,7 +55,27 @@ public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
         else if (!mouse_over && doAnimate)StartCoroutine(FadeOut());
     }
-    
+    private void IncreaseLives()
+    {
+        heartObjs[playerInfo.PlayerLives].SetActive(true);
+        playerInfo.PlayerLives++;
+        if (playerInfo.PlayerLives == _playerStartLives)
+        {
+            _countDown = false;
+        }
+    }
+    public void DecreaseLives()
+    {
+        playerInfo.PlayerLives--;
+        heartObjs[playerInfo.PlayerLives].SetActive(false);
+        print(heartObjs[playerInfo.PlayerLives].name);
+        _countDown = true;
+        if (_countDown)
+        {
+            print("countdown");
+        }
+    }
+
     private void DisplayTimeLeft(float curTime)
     {
         countdownPanel.SetActive(true);
@@ -59,15 +83,6 @@ public class Hearts : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         float seconds = (int)(curTime % 60);
 
         countdownText.text =  minutes.ToString("00") + " : " + seconds.ToString("00");
-    }
-
-    public void DecreaseHeart()
-    {
-        heartObjs[playerInfo.PlayerLives].SetActive(false);
-    }
-    public void ShowReganaratedHeart()
-    {
-        transform.GetChild(playerInfo.PlayerLives).gameObject.SetActive(true);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -18,6 +18,8 @@ public class HintFunction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] private float regenerationTimeInMinutes;
     [SerializeField] private Animator animator;
 
+    [Header("Scripts")]
+    [SerializeField] private PlayerInfo playerInfo;
     [SerializeField] private WordManager wordManager;
     [SerializeField] private KeyBoard keyBoard;
 
@@ -94,24 +96,26 @@ public class HintFunction : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     public void GetHint()
     {
+        print("gethint function");
         TakeCurrentWord();
         SetFirstAvailableLetter();
         DisplayHintsLeft();
     }
     private void TakeCurrentWord()
     {
-        _word = WordManager.currentWord;
+        _word = playerInfo.Word;//WordManager.CurrentWord; <--- remove this
         wordLetters = _word.ToCharArray();
     }
     
     private void SetFirstAvailableLetter()
     {
+        print("set availableLetter function");
         int wordArrayNum = 0;
         for (int i = lastLoopNum; i < keyboardParnt.childCount; i++)
         {
             lastLoopNum++;
             ButtonScrt key = keyboardParnt.GetChild(i).gameObject.GetComponent<ButtonScrt>();
-            if (key.thisLetter == wordLetters[wordArrayNum].ToString() && wordManager.hintAllowed && !key.isUsed)
+            if (key.thisLetter == wordLetters[wordArrayNum].ToString() && wordManager.HintAllowed && !key.isUsed)
             {
                 key.DrawYellowLine();
                 wordManager.GetHintLetter(key.thisLetter, currentHintAmount);

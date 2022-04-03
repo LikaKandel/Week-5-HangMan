@@ -10,6 +10,7 @@ public class DisplayWordInfo : MonoBehaviour
 
     public void DisplayInfo(string _word, int rightAnswers, int wrongAnswers)
     {
+        print("displayInfo");
         word.text = $"{_word}";
         rightAnswerAmount.text = $"{rightAnswers}";
         wrongAnswerAmount.text = $"{wrongAnswers}";
