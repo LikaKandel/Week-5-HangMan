@@ -374,7 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21c0f1f107f183429ada0d975245695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 6250639899025915701}
+  text: {fileID: 6250639899025915701}
   redLineGameobject: {fileID: 3418684689239138164}
   greenLineGameobject: {fileID: 4253519715923737410}
   yellowLineGameobject: {fileID: 5561364845602354179}
