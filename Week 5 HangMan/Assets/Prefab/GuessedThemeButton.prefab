@@ -136,11 +136,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1784aeae335c741958848dd66d20ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thisButton: {fileID: 1922576472845295940}
   buttonText: {fileID: 3305794303008848563}
   wordSizeInfo: {fileID: 4654712266862116668}
+  wordInfoPrefab: {fileID: 4651039533927116758, guid: fa5ab81f5ab49b44eb5edc84a27c8913, type: 3}
   themes: {fileID: 11400000, guid: c8c2e5a366b7ef34b93857d28c4822eb, type: 2}
   playerInfo: {fileID: 11400000, guid: 1dd7c42f935875d42b2d6fe51bd8d07f, type: 2}
-  wordInfoPrefab: {fileID: 4651039533927116758, guid: fa5ab81f5ab49b44eb5edc84a27c8913, type: 3}
 --- !u!1 &6388212774690878329
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +154,7 @@ GameObject:
   - component: {fileID: 3633750176296273287}
   - component: {fileID: 3305794303008848563}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ThemeName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -232,7 +233,7 @@ GameObject:
   - component: {fileID: 7607258434226401019}
   - component: {fileID: 3520716374479557942}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BoxSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -307,7 +308,7 @@ GameObject:
   - component: {fileID: 5796572019293957382}
   - component: {fileID: 4654712266862116668}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: ThemeCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
